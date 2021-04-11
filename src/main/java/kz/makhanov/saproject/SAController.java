@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SAController {
 
-    @GetMapping("")
+    @GetMapping("/health")
     public String health() {
-        return "{\"status\": \"OK\"}"
+        return "{\"status\": \"OK1\"}";
     }
 }
