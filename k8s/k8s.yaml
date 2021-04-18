@@ -1,20 +1,37 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: saproject
+  name: spring-deployment
 spec:
   replicas: 2
+  selector:
+    matchLabels:
+      name: spring
   template:
     metadata:
       labels:
-        app: saproject
-        visualize: "true"
+        name: spring
     spec:
       containers:
-        - name: saproject-pod
+        - name: application
           image: makhanov27/saproject
           ports:
             - containerPort: 8000
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+              scheme: HTTP
+            initialDelaySeconds: 10
+            timeoutSeconds: 10
 ---
 apiVersion: v1
 kind: Service
